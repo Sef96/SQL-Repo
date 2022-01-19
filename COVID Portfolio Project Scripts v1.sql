@@ -121,7 +121,7 @@ New_vaccinations numeric,
 RollingPeopleVaccinated numeric
 )
 Insert into #PercentPopulationVaccinated
-Select dea.continent, dea.location, dea.date, dea.population, vac.new_vaccinations, SUM(Convert(int, vac.new_vaccinations)) 
+Select dea.continent, dea.location, dea.date, dea.population, vac.new_vaccinations, SUM(Convert(BIGINT, vac.new_vaccinations)) 
 OVER (Partition by dea.location Order by dea.location, dea.date) as RollingPeopleVaccinated
 From PortfolioProject..CovidDeaths dea
 Join PortfolioProject..CovidVaccinations vac
@@ -130,9 +130,5 @@ Join PortfolioProject..CovidVaccinations vac
 --Where dea.continent is not null
 --Order By 2,3
 
-Select *, (RollingPeopleVaccinated/Population)*100
+Select *, (RollingPeopleVaccinated/Population)*100 As PercentageVaccinated
 From #PercentPopulationVaccinated
-
-
-
--- Creating View
